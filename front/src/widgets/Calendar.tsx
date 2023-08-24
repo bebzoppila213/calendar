@@ -3,37 +3,31 @@ import CalendarForm from "../entities/calendar/ui/CalendarForm";
 import CalendarMenu from "../entities/calendar/ui/CalendarMenu";
 import DayList from "../entities/calendar/ui/DayList";
 import { useEffect, useState } from "react";
-import { Moment } from "moment";
-import moment from "moment";
 import { useAppDispatch } from "../shared/hooks/redux";
 import { loadRecords } from "../entities/calendar/model/api";
 
 export default function Calendar() {
   const { currentDate, addMonths, subtractMonths } = useDate();
-  const [activeDate, setActiveDate] = useState<null | Moment>(null);
+  const [activeDate, setActiveDate] = useState<null | Date>(null);
   const dispatcher = useAppDispatch();
 
   const updateActiveDate = (dayNumber: number) => {
-    setActiveDate(
-      moment({
-        year: currentDate.year(),
-        month: currentDate.month(),
-        day: dayNumber + 1,
-      })
-    );
+    const newActiveDate = new Date(currentDate)
+    newActiveDate.setDate(dayNumber)
+    setActiveDate(newActiveDate)
   };
-
+  
   useEffect(() => {
-    dispatcher(loadRecords(currentDate.format()));
+    dispatcher(loadRecords(currentDate));
   }, [currentDate]);
-
+  
   return (
     <section className="calendar">
       <div className="container">
         <div className="calendar-inner">
           <div className="calendar-info">
             <h2 className="calendar-title">
-              {currentDate.format("MMMM YYYY")}
+              {currentDate.toLocaleString('default', { month: 'long', year: "numeric" })}
             </h2>
           </div>
           <DayList

@@ -18,7 +18,7 @@ export default function CalendarTable({ records, btnDelClick, btnChangeClick }: 
         </tr>
       </thead>
       <tbody>
-        {records.map((rec) => (
+        {records && records.map((rec) => (
           <CalendarTableItem btnChangeClick={btnChangeClick} key={rec.id} btnDelClick={btnDelClick} record={rec} />
         ))}
       </tbody>

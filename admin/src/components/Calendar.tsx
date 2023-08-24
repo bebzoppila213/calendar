@@ -3,6 +3,8 @@ import { loadAllRecords, deleteRecord, putRecord } from "../api/calendar";
 import { IRecord } from "../types/calendar";
 import CalendarTable from "./CalendarTable";
 import FormChange from "./FormChange";
+
+
 export default function Calendar() {
   const [records, setRecords] = useState<IRecord[]>([]);
   const [changeRecord, setChangeRecord] = useState<IRecord | null>(null)

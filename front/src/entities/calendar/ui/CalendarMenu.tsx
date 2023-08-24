@@ -10,10 +10,10 @@ export default function CalendarMenu({subtractMonths, addMonths}: CalendarMenuPr
     return(
         <div className="calendar-menu">
             <button onClick={() => subtractMonths()} className="btn">
-              Pref
+              Назад
             </button>
             <button onClick={() => addMonths()} className="btn">
-              Next
+              Далее
             </button>
           </div>
     )

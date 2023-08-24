@@ -2,14 +2,14 @@ import moment from "moment"
 import { useState } from "react";
 
 export default function useDate(){
-    const [currentDate, setCurrentDate] = useState(moment().locale('ru'))
+    const [currentDate, setCurrentDate] = useState(new Date())
 
     const addMonths = () => {
-        setCurrentDate(moment(currentDate).add(1, 'M'))
+        setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() + 1)))
     }
 
     const subtractMonths = () => {
-        setCurrentDate(moment(currentDate).subtract(1, 'M'))
+        setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)))
     }
 
     return{

@@ -3,7 +3,7 @@ import axios from "axios";
 import { BASE_URL, IResponse } from "../../../shared/api/config";
 import { IRecord } from "../types";
 
-export const loadRecords = createAsyncThunk("record/loadRecords", async (date: string) => {
+export const loadRecords = createAsyncThunk("record/loadRecords", async (date: Date) => {
     const response = await axios.get<IResponse<IRecord[]>>(BASE_URL + "/calendar", { params: { date: date } })
     return response.data
 })

@@ -1,19 +1,20 @@
 import { Response, Request } from "express";
-import CalendarService from "../services/CalendarService";
+// import CalendarService from "../services/Calendar/CalendarService";
 import BaseRouter, { RouterConfigItem } from "./BaseRouter";
 import { getFirstLastDayInMonth } from "../utils/date";
+import CalendarSqlService from "../services/Calendar/CalendarSqlService";
+import { ICalendarService } from "../services/Calendar/CalendarServiceInterface";
 
 export default class CalendarRouter extends BaseRouter {
-  private calendarService: CalendarService;
+  private calendarService: ICalendarService;
 
   constructor() {
     super();
-    this.calendarService = new CalendarService();
+    this.calendarService = new CalendarSqlService();
   }
 
   private async addRecord(req: Request, res: Response) {
     try {
-
       const serviceItem = await this.calendarService.create(
         req.body.name,
         req.body.phone,
@@ -21,7 +22,9 @@ export default class CalendarRouter extends BaseRouter {
       );
 
       this.sendOk(res, serviceItem);
-    } catch {
+    } catch(e) {
+      console.log(e);
+      
       this.sendFail(res);
     }
   }
@@ -29,7 +32,7 @@ export default class CalendarRouter extends BaseRouter {
   private async getRecords(req: Request, res: Response) {
     try {
       const dates = getFirstLastDayInMonth(new Date(req.query.date as string));
-
+        
       const records = await this.calendarService.get(
         dates.firstDay,
         dates.lastDay
@@ -53,11 +56,12 @@ export default class CalendarRouter extends BaseRouter {
 
   private async deleteRecord(req: Request, res: Response) {
     try {
-
-      const deletedRecord = this.calendarService.delete(req.body.recordId);
-
+      const deletedRecord = await this.calendarService.delete(req.body.recordId);
+      
       this.sendOk(res, deletedRecord);
     } catch (e) {
+      console.log(e);
+      
       this.sendFail(res);
     }
   }

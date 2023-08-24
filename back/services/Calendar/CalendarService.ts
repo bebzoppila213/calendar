@@ -1,10 +1,10 @@
-import BaseService from './BaseService'
+import BaseService from '../BaseService'
+import { ICalendarService } from './CalendarServiceInterface'
 
-export default class CalendarService extends BaseService{
+export default class CalendarService extends BaseService implements ICalendarService{
 
     public async create(name: string, phone: string, date: string){
         const record = await this.prisma.record.create({data: {name: name, phone: phone, date: date}})
-        this.prisma.$disconnect()
         return record
     }
 
@@ -13,7 +13,6 @@ export default class CalendarService extends BaseService{
             gte: firstDate,
             lte: lastDate
         }}})
-        this.prisma.$disconnect()
         return records
     }
 
@@ -23,8 +22,8 @@ export default class CalendarService extends BaseService{
     }
 
     public async update(recordId: number, name: string, phone: string, date: string){
-        const updateRecord = await this.prisma.record.updateMany({where: {id: recordId}, data: {name, phone, date: new Date(date)}})
-        return updateRecord
+        await this.prisma.record.updateMany({where: {id: recordId}, data: {name, phone, date: new Date(date)}})
+        return {name, phone, date, id: recordId}
     }
 
     public async getAll(){
